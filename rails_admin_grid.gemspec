@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Michael Colavita"]
   s.email       = ["colavitam@gmail.com"]
   s.homepage    = "https://github.com/colavitam/rails_admin_grid"
-  s.summary     = "Rails admin plugin to display objects in a grid."
+  s.summary     = "A custom RailsAdmin action to display objects in a grid."
   s.description = "RailsAdminGrid is a custom action for RailsAdmin that displays objects in a grid with thumbnails. It provides an alternative to the default list view provided in RailsAdmin."
   s.license     = "MIT"
 

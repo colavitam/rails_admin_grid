@@ -2,6 +2,10 @@
 
 RailsAdminGrid is a custom collection action for RailsAdmin that displays objects in a grid with thumbnails. It provides an alternative to the default list view provided in RailsAdmin.
 
+## Preview
+
+![alt tag](https://raw.githubusercontent.com/colavitam/rails_admin_grid/master/static/rails_admin_grid.jpg)
+
 ## Configuration
 
 ### Global
@@ -48,4 +52,9 @@ rails_admin do
 end
 ```
 
-The only information RailsAdmin requires to function properly is a `thumbnail_method`, a method which it will use to retrieve the corresponding thumbnail for the object. It also supports many of the applicable options used in the default list action ([see more](https://github.com/sferik/rails_admin/wiki/List)).
+The only information RailsAdmin requires to function properly is a `thumbnail_method`, a method which it will use to retrieve the corresponding thumbnail for the object. Visible fields and copes can also be configured in this block.
+
+These properties must be specified in the `list` block instead of the `grid` block:
+* items_per_page
+* sort_reverse
+* sort_by
