@@ -1,6 +1,6 @@
 # RailsAdminGrid
 
-RailsAdminGrid is a custom collection action for RailsAdmin that displays objects in a grid with thumbnails. It provides an alternative to the default list view provided in RailsAdmin.
+RailsAdminGrid is a custom collection action for [RailsAdmin](https://github.com/sferik/rails_admin) that displays objects in a grid with thumbnails. It provides an alternative to the default list view provided in RailsAdmin.
 
 ## Preview
 
