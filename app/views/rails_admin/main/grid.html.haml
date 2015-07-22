@@ -124,24 +124,26 @@
       <b>#{description}</b>
 
     .container-fluid
-      - @objects.each do |object|
-        .col-md-3.col-sm-4{class: "#{@abstract_model.param_key}_row"}
-          .panel.panel-default
-            .panel-body
-              %a{href: show_path(model_name: @abstract_model.to_param, id: object.try(:id))}
-                %div{style: "height: 200px;"}
-                  -img_src = @model_config.grid.thumbnail_method ? object.send(@model_config.grid.thumbnail_method) : nil
-                  %img.img-responsive.center-block.center-vert{src: img_src, alt: "View #{@abstract_model}", style: "max-height: 100%;"}
-              %br
-              .text-center= check_box_tag "bulk_ids[]", object.id, false
-            .panel-footer
-              - properties.map{ |property| property.bind(:object, object) }.each do |property|
-                - value = property.pretty_value
-                %p{class: "#{property.css_class} #{property.type_css_class}", title: strip_tags(value.to_s)}
-                  %strong=property.label+":"
-                  =value
-              .list-inline.text-center
-                =menu_for :member, @abstract_model, object, true
+      - @objects.each_slice(4) do |object_row|
+        .row
+          -object_row.each do |object|
+            .col-md-3{class: "#{@abstract_model.param_key}_row"}
+              .panel.panel-default
+                .panel-body
+                  %a{href: show_path(model_name: @abstract_model.to_param, id: object.try(:id))}
+                    %div{style: "height: 200px;"}
+                      -img_src = @model_config.grid.thumbnail_method ? object.send(@model_config.grid.thumbnail_method) : nil
+                      %img.img-responsive.center-block.center-vert{src: img_src, alt: "View #{@abstract_model}", style: "max-height: 100%;"}
+                  %br
+                  .text-center= check_box_tag "bulk_ids[]", object.id, false
+                .panel-footer
+                  - properties.map{ |property| property.bind(:object, object) }.each do |property|
+                    - value = property.pretty_value
+                    %p{class: "#{property.css_class} #{property.type_css_class}", title: strip_tags(value.to_s)}
+                      %strong=property.label+":"
+                      =value
+                  .list-inline.text-center
+                    =menu_for :member, @abstract_model, object, true
 
     - if @objects.respond_to?(:total_count)
       - total_count = @objects.total_count.to_i
