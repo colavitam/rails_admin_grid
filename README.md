@@ -1,10 +1,18 @@
 # RailsAdminGrid
+[![Gem Version](https://badge.fury.io/rb/rails_admin_grid.svg)](http://badge.fury.io/rb/rails_admin_grid)
 
 RailsAdminGrid is a custom collection action for [RailsAdmin](https://github.com/sferik/rails_admin) that displays objects in a grid with thumbnails. It provides an alternative to the default list view provided in RailsAdmin.
 
 ## Preview
 
 ![alt tag](https://raw.githubusercontent.com/colavitam/rails_admin_grid/master/static/rails_admin_grid.jpg)
+
+## Installation
+
+Add the following to your Gemfile:
+```ruby
+gem 'rails_admin_grid'
+```
 
 ## Configuration
 
