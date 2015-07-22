@@ -6,21 +6,21 @@
   params.delete(:sort_reverse) unless params[:sort_reverse] == 'true'
   sort_reverse = params[:sort_reverse]
   sort = params[:sort]
-  params.delete(:sort) if params[:sort] == @model_config.list.sort_by.to_s
+  params.delete(:sort) if params[:sort] == @model_config.grid.sort_by.to_s
 
   export_action = RailsAdmin::Config::Actions.find(:export, { controller: self.controller, abstract_model: @abstract_model })
   export_action = nil unless export_action && authorized?(export_action.authorization_key, @abstract_model)
 
   description = RailsAdmin.config(@abstract_model.model_name).description
-  properties = @model_config.list.with(controller: self.controller, view: self, object: @abstract_model.model.new).visible_fields
+  properties = @model_config.grid.with(controller: self.controller, view: self, object: @abstract_model.model.new).visible_fields
   # columns paginate
-  @filterable_fields = @model_config.list.fields.select(&:filterable?)
+  @filterable_fields = @model_config.grid.fields.select(&:filterable?)
   sets = get_column_sets(properties)
   properties = sets[params[:set].to_i] || []
   other_left = ((params[:set].to_i - 1) >= 0) && sets[params[:set].to_i - 1].present?
   other_right = sets[params[:set].to_i + 1].present?
   @index = 0
-  @ordered_filters = (params[:f] || @model_config.list.filters).inject({}) { |memo, filter|
+  @ordered_filters = (params[:f] || @model_config.grid.filters).inject({}) { |memo, filter|
     field_name = filter.is_a?(Array) ? filter.first : filter
   (filter.is_a?(Array) ? filter.last : { (@index += 1) => { "v" => '' } }) .each do |index, filter_hash|
       unless filter_hash['disabled']
@@ -105,9 +105,9 @@
       - if export_action
         %span{style: 'float:right'}= link_to wording_for(:link, export_action), export_path(params.except('set').except('page')), class: 'btn btn-info'
 
-  - unless @model_config.list.scopes.empty?
+  - unless @model_config.grid.scopes.empty?
     %ul.nav.nav-tabs#scope_selector
-      - @model_config.list.scopes.each_with_index do |scope, index|
+      - @model_config.grid.scopes.each_with_index do |scope, index|
         - scope = '_all' if scope.nil?
         %li{class: "#{'active' if scope.to_s == params[:scope] || (params[:scope].blank? && index == 0)}"}
           %a{href: grid_path(params.merge(scope: scope, page: nil)), class: 'pjax'}= I18n.t("admin.scopes.#{@abstract_model.to_param}.#{scope}", default: I18n.t("admin.scopes.#{scope}", default: scope.to_s.titleize))
@@ -119,14 +119,16 @@
 
     .row
       - p @model_config.grid.thumbnail
-      - @objects.each do
+      - @objects.each do |object|
         .col-md-2.col-sm-4.col-xs-6{class: "#{@abstract_model.param_key}_row"}
-          %a.thumbnail{href: show_path(model_name: @abstract_model.to_param, id: qualifier.submission.id)}
-            %img.img-responsive{src: qualifier.submission.content.thumb}
+          .thumbnail
+            %a{href: show_path(model_name: @abstract_model.to_param, id: object.try(:id))}
+              %img.img-responsive{src: object.send(@model_config.grid.thumbnail)}
             .caption
               - properties.map{ |property| property.bind(:object, object) }.each do |property|
                 - value = property.pretty_value
                 %p{class: "#{property.css_class} #{property.type_css_class}", title: strip_tags(value.to_s)}= value
+            
 
     / %table.table.table-condensed.table-striped
     /   %thead

@@ -5,7 +5,7 @@ module RailsAdmin
   module Config
     module Sections
       # Configuration of the explore view
-      class Grid < Base
+      class Grid < List
         register_instance_option :thumbnail do
           nil
         end
