@@ -9,12 +9,12 @@ Gem::Specification.new do |s|
   s.version     = RailsAdminGrid::VERSION
   s.authors     = ["Michael Colavita"]
   s.email       = ["colavitam@gmail.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of RailsAdminGrid."
-  s.description = "TODO: Description of RailsAdminGrid."
+  s.homepage    = "https://github.com/colavitam/rails_admin_grid"
+  s.summary     = "Rails admin plugin to display objects in a grid."
+  s.description = "RailsAdminGrid is a custom action for RailsAdmin that displays objects in a grid with thumbnails. It provides an alternative to the default list view provided in RailsAdmin."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
 
-  s.add_dependency "rails", "~> 4.2.2"
+  s.add_dependency "rails", ">= 4.0.0"
 end
