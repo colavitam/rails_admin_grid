@@ -3,7 +3,7 @@ en:
   admin:
     actions:
       grid:
-        title: "Grid"
-        menu: "Grid for %{model_label_plural}"
+        title: "Grid for %{model_label_plural}"
+        menu: "Grid"
         breadcrumb: "Grid"
         link: "Grid"

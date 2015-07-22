@@ -93,11 +93,10 @@
       = "#list th.#{property.css_class} { width: #{property.column_width}px; min-width: #{property.column_width}px; }"
       = "#list td.#{property.css_class} { max-width: #{property.column_width}px; }"
   :css
-    .row-eq-height {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display:         flex;
+    .center-vert {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
     }
   = form_tag(grid_path(params.except(*%w[page f query])), method: :get, class: "pjax-form form-inline") do
     .well
@@ -125,57 +124,24 @@
       <b>#{description}</b>
 
     .container-fluid
-      - p @model_config.grid.thumbnail
-      - @objects.each_slice(4) do |object_set|
-        .row.row-eq-height
-          - object_set.each do |object|
-            .col-md-3{class: "#{@abstract_model.param_key}_row"}
-              .panel.panel-default
-                .panel-body
-                  %a{href: show_path(model_name: @abstract_model.to_param, id: object.try(:id))}
-                    %div{style: "height: 200px;"}
-                      %img.img-responsive.center-block{src: object.send(@model_config.grid.thumbnail), style: "max-height: 100%; top: 0; bottom: 0;"}
-                .panel-footer
-                  - properties.map{ |property| property.bind(:object, object) }.each do |property|
-                    - value = property.pretty_value
-                    %p{class: "#{property.css_class} #{property.type_css_class}", title: strip_tags(value.to_s)}
-                      %strong=property.label+":"
-                      =value
-                  .list-inline.text-center
-                    =menu_for :member, @abstract_model, object, true
-            
-
-    / %table.table.table-condensed.table-striped
-    /   %thead
-    /     %tr
-    /       %th.shrink
-    /         %input.toggle{type: "checkbox"}
-    /       - if other_left
-    /         %th.other.left.shrink= "..."
-    /       - properties.each do |property|
-    /         - selected = (sort == property.name.to_s)
-    /         - if property.sortable
-    /           - sort_location = grid_path params.except('sort_reverse').except('page').merge(sort: property.name).merge(selected && sort_reverse != "true" ? {sort_reverse: "true"} : {})
-    /           - sort_direction = (sort_reverse == 'true' ? "headerSortUp" : "headerSortDown" if selected)
-    /         %th{class: "#{property.sortable && "header pjax" || nil} #{sort_direction if property.sortable && sort_direction} #{property.css_class} #{property.type_css_class}", :'data-href' => (property.sortable && sort_location), rel: "tooltip", title: "#{property.hint}"}= capitalize_first_letter(property.label)
-    /       - if other_right
-    /         %th.other.right.shrink= "..."
-    /       %th.last.shrink
-    /   %tbody
-    /     - @objects.each do |object|
-    /       %tr{class: "#{@abstract_model.param_key}_row"}
-    /         %td
-    /           = check_box_tag "bulk_ids[]", object.id, false
-    /         - if @other_left_link ||= other_left && grid_path(params.except('set').merge(params[:set].to_i != 1 ? {set: (params[:set].to_i - 1)} : {}))
-    /           %td.other.left= link_to "...", @other_left_link, class: 'pjax'
-    /         - properties.map{ |property| property.bind(:object, object) }.each do |property|
-    /           - value = property.pretty_value
-    /           %td{class: "#{property.css_class} #{property.type_css_class}", title: strip_tags(value.to_s)}= value
-    /         - if @other_right_link ||= other_right && grid_path(params.merge(set: (params[:set].to_i + 1)))
-    /           %td.other.right= link_to "...", @other_right_link, class: 'pjax'
-    /         %td.last.links
-    /           %ul.inline.list-inline= menu_for :member, @abstract_model, object, true
-
+      - @objects.each do |object|
+        .col-md-3.col-sm-4{class: "#{@abstract_model.param_key}_row"}
+          .panel.panel-default
+            .panel-body
+              %a{href: show_path(model_name: @abstract_model.to_param, id: object.try(:id))}
+                %div{style: "height: 200px;"}
+                  -img_src = @model_config.grid.thumbnail_method ? object.send(@model_config.grid.thumbnail_method) : nil
+                  %img.img-responsive.center-block.center-vert{src: img_src, alt: "View #{@abstract_model}", style: "max-height: 100%;"}
+              %br
+              .text-center= check_box_tag "bulk_ids[]", object.id, false
+            .panel-footer
+              - properties.map{ |property| property.bind(:object, object) }.each do |property|
+                - value = property.pretty_value
+                %p{class: "#{property.css_class} #{property.type_css_class}", title: strip_tags(value.to_s)}
+                  %strong=property.label+":"
+                  =value
+              .list-inline.text-center
+                =menu_for :member, @abstract_model, object, true
 
     - if @objects.respond_to?(:total_count)
       - total_count = @objects.total_count.to_i
