@@ -9,7 +9,7 @@ RailsAdminGrid is a custom collection action for [RailsAdmin](https://github.com
 
 ## Installation
 
-Add the following to your Gemfile:
+Add the following to your Gemfile **before rails_admin**:
 ```ruby
 gem 'rails_admin_grid'
 ```
