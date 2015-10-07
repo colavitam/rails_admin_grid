@@ -76,12 +76,12 @@
     $.filters.options.regional = {
     datePicker: {
     dateFormat: #{raw I18n.t("admin.misc.filter_date_format", default: I18n.t("admin.misc.filter_date_format", locale: :en)).to_json},
-    dayNames: #{raw RailsAdmin::Config::Fields::Types::Datetime.day_names.to_json},
-    dayNamesShort: #{raw RailsAdmin::Config::Fields::Types::Datetime.abbr_day_names.to_json},
-    dayNamesMin: #{raw RailsAdmin::Config::Fields::Types::Datetime.abbr_day_names.to_json},
+    dayNames: #{raw I18n.t('admin.date.day_names').to_json},
+    dayNamesShort: #{raw I18n.t('admin.date.abbr_day_names').to_json},
+    dayNamesMin: #{raw I18n.t('admin.date.abbr_day_names').to_json},
     firstDay: "1",
-    monthNames: #{raw RailsAdmin::Config::Fields::Types::Datetime.month_names.to_json},
-    monthNamesShort: #{raw RailsAdmin::Config::Fields::Types::Datetime.abbr_month_names.to_json}
+    monthNames: #{raw I18n.t('admin.date.month_names').to_json},
+    monthNamesShort: #{raw I18n.t('admin.date.abbr_month_names').to_json}
     }
     }
 
